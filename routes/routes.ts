@@ -53,4 +53,4 @@ router.post('/food/search', async (req: Request, res: Response) => {
     res.json(food);
 })
 
-module.exports = router;
+export default router;
