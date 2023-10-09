@@ -1,9 +1,21 @@
 import mongoose from 'mongoose';
 
+enum Unit {
+    Serving = "SERVING",
+    Cups = "CUPS",
+    Bowl = "BOWL",
+    Plate = "Plate",
+    Grams = "GRAMS"
+}
+
 const foodSchema = new mongoose.Schema({
     name: String,
     amount: Number,
-    unit: String,
+    unit: {
+        type: String,
+        enum: Unit,
+        default: Unit.Serving
+    },
     calories: Number,
     protein: Number,
     carbs: Number,
