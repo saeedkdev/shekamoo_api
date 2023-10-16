@@ -3,6 +3,14 @@ import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 
 import router from './routes/routes';
+// cors
+import cors from 'cors';
+
+// allow all origins
+const corsOptions = {
+    origin: '*',
+    optionsSuccessStatus: 200,
+};
 
 
 dotenv.config();
@@ -11,6 +19,7 @@ const app: Express = express();
 const port = process.env.PORT;
 
 app.use(express.json());
+app.use(cors(corsOptions));
 
 const dbUrl: string = process.env.DATABASE_URL || '';
 

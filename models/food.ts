@@ -1,11 +1,11 @@
 import mongoose from 'mongoose';
 
 enum Unit {
-    Serving = "SERVING",
-    Cups = "CUPS",
-    Bowl = "BOWL",
-    Plate = "Plate",
-    Grams = "GRAMS"
+    Serving = "serving",
+    Cups = "cups",
+    Bowl = "bowl",
+    Plate = "plate",
+    Grams = "grams"
 }
 
 const foodSchema = new mongoose.Schema({
