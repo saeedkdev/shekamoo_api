@@ -53,4 +53,43 @@ router.post('/food/search', async (req: Request, res: Response) => {
     res.json(food);
 })
 
+
+// user routes
+import User from '../models/user';
+
+router.post('/user', async (req: Request, res: Response) => {
+
+    const { name, email, googleId } = req.body;
+
+    const foundUser = await User.findOne({ googleId: googleId });
+
+    if (foundUser) {
+        res.json(foundUser);
+        return;
+    }
+
+    const user = new User({
+        name,
+        email,
+        googleId
+    });
+    const savedUser = await user.save();
+    res.json(savedUser);
+});
+
+router.get('/user/:googleid', async (req: Request, res: Response) => {
+    // find by googleId
+    const user = await User.findOne({ googleId: req.params.googleid });
+    if (!user) {
+        res.json(null);
+        return;
+    }
+    res.json(user);
+})
+
+router.get('/user', async (req: Request, res: Response) => {
+    const users = await User.find({});
+    res.json(users);
+})
+
 export default router;
