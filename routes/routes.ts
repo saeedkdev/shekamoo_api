@@ -92,4 +92,47 @@ router.get('/user', async (req: Request, res: Response) => {
     res.json(users);
 })
 
+// get user meals for date
+router.post('/user/meals', async (req: Request, res: Response) => {
+    const { googleId, date } = req.body;
+    
+    const user = await User.findOne({ googleId: googleId });
+    if (!user) {
+        res.json(null);
+        return;
+    }
+
+    const meals = await Meal.find({ date: date, _id: { $in: user.meals } }).populate('foods');
+    res.json(meals);
+})
+
+import Meal from '../models/meal';
+
+// add meal to db and then add meal to user
+router.post('/meal', async (req: Request, res: Response) => {
+    const { name, date, type, foodId, googleId } = req.body;
+
+    const user = await User.findOne({ googleId: googleId });
+    const food = await Food.findById(foodId);
+
+    if (user && food) {
+        const meal = new Meal({
+            name,
+            date,
+            type,
+            foods: [food]
+        });
+
+        const savedMeal = await meal.save();
+
+        user.meals.push(savedMeal.id);
+        await user.save();
+
+        res.json(savedMeal);
+    } else {
+        res.json(null);
+    }
+
+})
+
 export default router;
